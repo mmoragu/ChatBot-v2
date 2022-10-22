@@ -41,7 +41,7 @@ class ChatBot(object):
         net = tflearn.fully_connected(net, len(train_y[0]), activation='softmax')
         net = tflearn.regression(net)
         self.model = tflearn.DNN(net, tensorboard_dir='utils/train_logs')
-        self.model.load('utils')
+        self.model.load('utils/model.tflearn')
 
     def clean_up_sentence(self, sentence):
         sentence_words = nltk.word_tokenize(sentence)
@@ -74,7 +74,7 @@ class ChatBot(object):
         context = {}
         if results:
             while results:
-                for i in self.intents['intents']:
+                for i in self.intents:
                     if i['tag'] == results[0][0]:
                         if 'context_set' in i:
                             if show_details: print('context:', i['context_set'])
@@ -86,3 +86,5 @@ class ChatBot(object):
                             if show_details: print('tag:', i['tag'])
                             return random.choice(i['responses'])
                 return "I can't guess"
+        else:
+            return "I cannot answer"
